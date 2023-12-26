@@ -135,3 +135,4 @@ whatsappClient.on('message', async msg => {
     }
   }
 });
+//suggest more functionalities
