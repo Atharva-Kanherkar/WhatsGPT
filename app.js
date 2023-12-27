@@ -21,9 +21,9 @@ whatsappClient.on('authenticated', () => {
   console.log('AUTHENTICATED');
 });
 //Sends the message to every user's first message every hour.
-let repliedUsers = [];
+ let repliedUsers = [];
 whatsappClient.on('message', msg => {
-  if (msg.body && !repliedUsers.includes(msg.from)) {
+  if (msg.body && !repliedUsers.includes(msg.from) && !msg.isGroupMsg) {
     msg.reply('Thank you for reaching out to me, I will be responding soon!');
     repliedUsers.push(msg.from);
   }
@@ -31,6 +31,7 @@ whatsappClient.on('message', msg => {
 setInterval(() => {
   repliedUsers = [];
 }, 60 * 60 * 1000);
+
  
  
 
@@ -136,3 +137,15 @@ whatsappClient.on('message', async msg => {
   }
 });
 //suggest more functionalities
+//weather
+whatsappClient.on('message', async msg => {
+    if (msg.body == '!weather') {
+        let weatherData = await getWeatherData(); // function to fetch weather data from API
+        msg.reply(`
+            Weather Update:
+            Location: ${weatherData.location}
+            Temperature: ${weatherData.temperature}°C
+            Condition: ${weatherData.condition}
+        `);
+    }
+});
